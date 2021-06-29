@@ -14,6 +14,25 @@ typedef struct {
     byte a;
 } color;
 
+typedef struct {
+    int x;
+    int y;
+} vector2i;
+
+#define clr_red ((color){ 255, 0, 0, 255 })
+#define clr_green ((color){ 0, 255, 0, 255 })
+#define clr_blue ((color){ 0, 0, 255, 255 })
+#define clr_white ((color){ 255, 255, 255, 255 })
+#define clr_black ((color){ 0, 0, 0, 255 })
+
 #define clr(r, g, b, a) ((color){ r, g, b, a })
+#define v2i(x, y) ((vector2i) { x, y })
+
+#define swap(x,y) do {   \
+   typeof(x) _x = x;     \
+   typeof(y) _y = y;     \
+   (x) = _y;             \
+   (y) = _x;             \
+ } while(0)
 
 #endif //RUAN_TYPES_H

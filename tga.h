@@ -51,7 +51,9 @@ void tga_free(tga_image* image) {
     free(image);
 }
 
-color tga_get_pixel(tga_image* img, short x, short y) {
+color tga_get_pixel(tga_image* img, vector2i pos) {
+    short x = (short)pos.x;
+    short y = (short)pos.y;
     if (x >= 0 && x < img->width && y >= 0 && y < img->height) {
         byte* ptr = img->data + (img->width * y + x) * BYTES_PER_PIXEL;
         return (color){*(ptr + 2), *(ptr + 1), *(ptr + 0), *(ptr + 3) };
@@ -61,7 +63,9 @@ color tga_get_pixel(tga_image* img, short x, short y) {
     }
 }
 
-void tga_set_pixel(tga_image *img, short x, short y, color color) {
+void tga_set_pixel(tga_image *img, vector2i pos, color color) {
+    short x = (short)pos.x;
+    short y = (short)pos.y;
     if (x >= 0 && x < img->width && y >= 0 && y < img->height) {
         byte c[4];
         c[0] = color.b;
