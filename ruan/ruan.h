@@ -8,16 +8,19 @@
 #include <math.h>
 #include <stdbool.h>
 
-typedef struct {
-    void* device;
-    void (*set) (void*, vector2i, color);
-} frame_buffer;
-
-void ruan_draw(frame_buffer* fb, vector2i pos, color color) {
-    fb->set(fb->device, pos, color);
+void ruan_clear(device* d) {
+    d->clear(d->handle);
 }
 
-void ruan_line(frame_buffer *fb, vector2i from, vector2i to, color color) {
+void ruan_flush(device* d) {
+    d->flush(d->handle);
+}
+
+void ruan_pixel(device* d, vector2i pos, color color) {
+    d->set_pixel(d->handle, pos, color);
+}
+
+void ruan_line(device *d, vector2i from, vector2i to, color color) {
     bool steep = false;
     if (abs(to.x - from.x) < abs((to.y - from.y))) {
         swap(from.x, from.y);
@@ -35,9 +38,9 @@ void ruan_line(frame_buffer *fb, vector2i from, vector2i to, color color) {
     int dir = from.y > to.y ? -1 : 1;
     for (int x = from.x; x <= to.x; x++) {
         if (steep) {
-            ruan_draw(fb, v2i(y, x), color);
+            ruan_pixel(d, v2i(y, x), color);
         } else {
-            ruan_draw(fb, v2i(x, y), color);
+            ruan_pixel(d, v2i(x, y), color);
         }
         error += derror;
         if (error > 0.5f) {

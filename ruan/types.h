@@ -28,6 +28,13 @@ typedef struct {
 #define clr(r, g, b, a) ((color){ r, g, b, a })
 #define v2i(x, y) ((vector2i) { x, y })
 
+typedef struct {
+    void* handle;
+    void (*set_pixel) (void*, vector2i, color);
+    void (*flush)(void*);
+    void (*clear)(void*);
+} device;
+
 #define swap(x,y) do {   \
    typeof(x) _x = x;     \
    typeof(y) _y = y;     \
