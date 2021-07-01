@@ -14,10 +14,7 @@ void app_launch_finished() {
 void app_update(void) {
     ruan_clear(d);
 
-    int x = (rand() % 1000);
-    int y = (rand() % 1000);
-
-    ruan_line(d, v2i(0, 0), v2i(x, y), clr_red);
+    ruan_line(d, v2i(0, 0), v2i(1000, 1000), clr_red);
 
     ruan_flush(d);
 }

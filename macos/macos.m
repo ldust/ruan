@@ -67,8 +67,10 @@
 }
 
 - (void) setPixel:(vector2i) pos color:(color) clr {
-    int y = size.y - pos.y - 1;
-    memcpy(rep.bitmapData + (size.x * y + pos.x) * BYTES_PER_PIXEL, &clr, BYTES_PER_PIXEL);
+    if (pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y) {
+        int y = size.y - pos.y - 1;
+        memcpy(rep.bitmapData + (size.x * y + pos.x) * BYTES_PER_PIXEL, &clr, BYTES_PER_PIXEL);
+    }
 }
 
 - (void) clear {
