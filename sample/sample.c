@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <time.h>
-#include "tga.h"
-#include "ruan.h"
-#include "platform.h"
-#include "obj.h"
-#include "darray.h"
+#include "../ruan/tga.h"
+#include "../ruan/ruan.h"
+#include "../ruan/platform.h"
+#include "../ruan/obj.h"
+#include "../ruan/darray.h"
 
 device *d;
 mesh *m;
@@ -12,7 +12,7 @@ void app_launch_finished() {
     srand(time(0));
     d = malloc(sizeof(device));
     app_create_win(v2i(400, 600), d);
-    m = obj_read("/Users/dust/Downloads/african_head.obj");
+    m = obj_read("res/african_head.obj");
 }
 
 double get_unix_time(void) {

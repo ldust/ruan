@@ -11,7 +11,7 @@
 #define LINE_SIZE 256
 
 mesh* obj_read(const char* file_name) {
-    FILE* file = fopen(file_name, "r");
+    FILE* file = app_open_file(file_name, "r");
     if (!file) {
         fprintf (stderr, "error: file open failed '%s'.\n", file_name);
         return NULL;

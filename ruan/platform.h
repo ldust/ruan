@@ -12,4 +12,6 @@ void app_create_win(vector2i size, device* d);
 
 void app_update(void);
 
+FILE* app_open_file(const char* file_name, const char* mode);
+
 #endif //RUAN_PLATFORM_H

@@ -9,6 +9,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include "types.h"
+#include "platform.h"
 
 #pragma pack(push, 1)
 typedef struct {
@@ -79,7 +80,7 @@ void tga_set_pixel(tga_image *img, vector2i pos, color color) {
 }
 
 void tga_write(tga_image *img, const char* file_name) {
-    FILE* file = fopen(file_name, "wb");
+    FILE* file = app_open_file(file_name, "wb");
     tga_header header;
     memset((void *)&header, 0, sizeof(header));
     header.data_type_code = 2; // Uncompressed, RGB images.
@@ -93,7 +94,7 @@ void tga_write(tga_image *img, const char* file_name) {
 }
 
 tga_image* tga_load(const char* file_name) {
-    FILE* file = fopen(file_name, "rb");
+    FILE* file = app_open_file(file_name, "rb");
     if (!file) {
         fprintf (stderr, "error: file open failed '%s'.\n", file_name);
         return 0;

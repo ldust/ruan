@@ -119,6 +119,19 @@ void clear(void *view) {
     [cv clear];
 }
 
+bool file_exists(const char* path){
+    return access(path, F_OK) != -1;
+}
+
+FILE* app_open_file(const char* file_name, const char* mode) {
+    if (file_exists(file_name)) {
+        return fopen(file_name, mode);
+    } else {
+        NSString* path = [NSString stringWithFormat:@"%@/%s", [[NSBundle mainBundle] resourcePath], file_name];
+        return fopen([path UTF8String], mode);
+    }
+}
+
 void app_create_win(vector2i size, device* d) {
     RAppDelegate* delegate = (RAppDelegate*)[NSApplication sharedApplication].delegate;
     NSRect screenRect = [[NSScreen mainScreen] visibleFrame];
