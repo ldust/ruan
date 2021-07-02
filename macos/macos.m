@@ -146,6 +146,7 @@ void app_create_win(vector2i size, device* d) {
 
     [delegate.window makeFirstResponder:delegate.view];
 
+    d->win_size = size;
     d->handle = delegate.view;
     d->set_pixel = set_pixel;
     d->flush = flush;

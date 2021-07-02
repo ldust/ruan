@@ -11,4 +11,5 @@ void app_launch_finished(void);
 void app_create_win(vector2i size, device* d);
 
 void app_update(void);
+
 #endif //RUAN_PLATFORM_H

@@ -92,7 +92,7 @@ void tga_write(tga_image *img, const char* file_name) {
     fclose(file);
 }
 
-tga_image* tga_read(const char* file_name) {
+tga_image* tga_load(const char* file_name) {
     FILE* file = fopen(file_name, "rb");
     if (!file) {
         fprintf (stderr, "error: file open failed '%s'.\n", file_name);
@@ -111,6 +111,7 @@ tga_image* tga_read(const char* file_name) {
     tga_image *img = tga_new(header.width, header.height);
     size_t sz = img->width * img->height * BYTES_PER_PIXEL;
     read_sz = fread(img->data, sz, 1, file);
+    fclose(file);
     if (read_sz != 1) {
         fprintf (stderr, "error: file data wrong '%s'.\n", file_name);
         tga_free(img);
