@@ -19,7 +19,7 @@ void ruan_pixel(device* d, vector2i pos, color color) {
 
 void ruan_line(device *d, vector2i from, vector2i to, color color) {
     bool steep = false;
-    if (abs(to.x - from.x) < abs((to.y - from.y))) {
+    if (abs(to.x - from.x) < abs(to.y - from.y)) {
         swap(from.x, from.y);
         swap(to.x, to.y);
         steep = true;
