@@ -13,6 +13,7 @@ typedef struct {
     void (*set_pixel) (void*, vector2i, color);
     void (*flush)(void*);
     void (*clear)(void*);
+    float* depth_buffer;
 } device;
 
 void app_launch_finished(void);

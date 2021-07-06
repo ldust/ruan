@@ -104,20 +104,28 @@ int main() {
     return 0;
 }
 
-void set_pixel(void *view, vector2i pos, color c) {
-    id cv = (ContentView*)view;
-    [cv setPixel:pos color:c];
+void set_pixel(void *ptr, vector2i pos, color c) {
+    device* d = (device*)ptr;
+    [(ContentView*)d->handle setPixel:pos color:c];
 }
 
-void flush(void *view) {
-    id cv = (ContentView*)view;
-    [cv setNeedsDisplay:YES];
+void flush(void *ptr) {
+    device* d = (device*)ptr;
+    [(ContentView*)d->handle setNeedsDisplay:YES];
 }
 
-void clear(void *view) {
-    id cv = (ContentView*)view;
-    [cv clear];
+void clear_depth(device* d) {
+    for (int i = 0; i < d->win_size.x * d->win_size.y; ++i) {
+        d->depth_buffer[i] = FLT_MAX * -1;
+    }
 }
+
+void clear(void *ptr) {
+    device* d = (device*)ptr;
+    [(ContentView*)d->handle clear];
+    clear_depth(d);
+}
+
 
 bool file_exists(const char* path){
     return access(path, F_OK) != -1;
@@ -164,4 +172,7 @@ void app_create_win(vector2i size, device* d) {
     d->set_pixel = set_pixel;
     d->flush = flush;
     d->clear = clear;
+    size_t ds = sizeof(float) * size.x * size.y;
+    d->depth_buffer = malloc(ds);
+    clear_depth(d);
 }

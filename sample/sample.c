@@ -57,10 +57,10 @@ void draw_wireframe() {
 
         float intensity = v3f_dot(normal, v3f_normalize(light_dir));
         if (intensity > 0) {
-            vector2i vs[3];
-            vs[0] = v2i(pa.x * scale + w, pa.y * scale + h);
-            vs[1] = v2i(pb.x * scale + w, pb.y * scale + h);
-            vs[2] = v2i(pc.x * scale + w, pc.y * scale + h);
+            vector3f vs[3];
+            vs[0] = v3f(pa.x * scale + w, pa.y * scale + h, pa.z);
+            vs[1] = v3f(pb.x * scale + w, pb.y * scale + h, pb.z);
+            vs[2] = v3f(pc.x * scale + w, pc.y * scale + h, pc.z);
             ruan_triangle(d, vs,clr(intensity * 255, intensity * 255, intensity * 255, 255));
         }
         //ruan_line(d, v2i(pos1.x * scale + w, pos1.y * scale + h), v2i(pos2.x * scale + w, pos2.y * scale + h), clr_white);

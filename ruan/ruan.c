@@ -7,15 +7,15 @@
 #include <float.h>
 
 void ruan_clear(device* d) {
-    d->clear(d->handle);
+    d->clear(d);
 }
 
 void ruan_flush(device* d) {
-    d->flush(d->handle);
+    d->flush(d);
 }
 
 void ruan_pixel(device* d, vector2i pos, color color) {
-    d->set_pixel(d->handle, pos, color);
+    d->set_pixel(d, pos, color);
 }
 
 void ruan_line(device *d, vector2i from, vector2i to, color color) {
@@ -48,7 +48,7 @@ void ruan_line(device *d, vector2i from, vector2i to, color color) {
     }
 }
 
-void ruan_triangle(device *d, vector2i* vs, color c) {
+void ruan_triangle(device *d, vector3f* vs, color c) {
     int max_x = d->win_size.x - 1;
     int max_y = d->win_size.y - 1;
     vector2i bbox_min = v2i(max_x, max_y);
@@ -59,12 +59,21 @@ void ruan_triangle(device *d, vector2i* vs, color c) {
         bbox_max.x = min(max_x, max(bbox_max.x, vs[i].x));
         bbox_max.y = min(max_y, max(bbox_max.y, vs[i].y));
     }
-    for (int x = bbox_min.x; x < bbox_max.x; ++x) {
-        for (int y = bbox_min.y; y < bbox_max.y; ++y) {
-            vector2i p = v2i(x, y);
+    for (int x = bbox_min.x; x <= bbox_max.x; ++x) {
+        for (int y = bbox_min.y; y <= bbox_max.y; ++y) {
+            vector3f p = v3f(x, y, 0);
             vector3f bc = barycentric(vs, p);
             if (bc.x >= 0 && bc.y >= 0 && bc.z >= 0) {
-                ruan_pixel(d, p, c);
+                int depth_idx = y * d->win_size.x + x;
+                float old = d->depth_buffer[depth_idx];
+                float now = vs[0].z * bc.x;
+                now += vs[1].z * bc.y;
+                now += vs[2].z * bc.z;
+                if (now >= old) {
+                    d->depth_buffer[depth_idx] = now;
+                    // clr(255 * now, 255 * now, 255 * now, 255)
+                    ruan_pixel(d, v2i(x, y), c);
+                }
             }
         }
     }
