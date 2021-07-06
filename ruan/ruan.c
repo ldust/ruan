@@ -64,7 +64,7 @@ void ruan_triangle(device *d, vector2i* vs, color c) {
             vector2i p = v2i(x, y);
             vector3f bc = barycentric(vs, p);
             if (bc.x >= 0 && bc.y >= 0 && bc.z >= 0) {
-                ruan_pixel(d, p, clr(255 * bc.x, 255 * bc.y, 255 * bc.z, 255));
+                ruan_pixel(d, p, c);
             }
         }
     }
