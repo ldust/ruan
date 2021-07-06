@@ -14,36 +14,12 @@ typedef struct {
     byte a;
 } color;
 
-typedef struct {
-    int x;
-    int y;
-} vector2i;
-
-#define v2i(x, y) ((vector2i) { x, y })
-
-typedef struct {
-    float x;
-    float y;
-    float z;
-} vector3f;
-
-#define v3f(x, y, z) ((vector3f) { x, y, z })
-
 #define clr_red ((color){ 255, 0, 0, 255 })
 #define clr_green ((color){ 0, 255, 0, 255 })
 #define clr_blue ((color){ 0, 0, 255, 255 })
 #define clr_white ((color){ 255, 255, 255, 255 })
 #define clr_black ((color){ 0, 0, 0, 255 })
-
 #define clr(r, g, b, a) ((color){ r, g, b, a })
-
-typedef struct {
-    vector2i win_size;
-    void* handle;
-    void (*set_pixel) (void*, vector2i, color);
-    void (*flush)(void*);
-    void (*clear)(void*);
-} device;
 
 #define swap(x,y) do {   \
    typeof(x) _x = x;     \
@@ -51,5 +27,8 @@ typedef struct {
    (x) = _y;             \
    (y) = _x;             \
  } while(0)
+
+#define min(a,b) (((a)<(b))?(a):(b))
+#define max(a,b) (((a)>(b))?(a):(b))
 
 #endif //RUAN_TYPES_H

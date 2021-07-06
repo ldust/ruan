@@ -5,7 +5,7 @@
 #ifndef RUAN_MESH_H
 #define RUAN_MESH_H
 
-#include "types.h"
+#include "geometry.h"
 
 typedef struct {
     vector3f *vertices;

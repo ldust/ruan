@@ -4,7 +4,16 @@
 
 #ifndef RUAN_PLATFORM_H
 #define RUAN_PLATFORM_H
-#include "types.h"
+#include "geometry.h"
+#include <stdio.h>
+
+typedef struct {
+    vector2i win_size;
+    void* handle;
+    void (*set_pixel) (void*, vector2i, color);
+    void (*flush)(void*);
+    void (*clear)(void*);
+} device;
 
 void app_launch_finished(void);
 

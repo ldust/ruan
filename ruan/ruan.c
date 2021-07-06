@@ -4,6 +4,7 @@
 
 #include "ruan.h"
 #include <stdlib.h>
+#include <float.h>
 
 void ruan_clear(device* d) {
     d->clear(d->handle);
@@ -45,4 +46,33 @@ void ruan_line(device *d, vector2i from, vector2i to, color color) {
             error -= dx * 2;
         }
     }
+}
+
+void ruan_triangle(device *d, vector2i* vs, color c) {
+    int max_x = d->win_size.x - 1;
+    int max_y = d->win_size.y - 1;
+    vector2i bbox_min = v2i(max_x, max_y);
+    vector2i bbox_max = v2i(0, 0);
+    for (int i = 0; i < 3; ++i) {
+        bbox_min.x = max(0, min(bbox_min.x, vs[i].x));
+        bbox_min.y = max(0, min(bbox_min.y, vs[i].y));
+        bbox_max.x = min(max_x, max(bbox_max.x, vs[i].x));
+        bbox_max.y = min(max_y, max(bbox_max.y, vs[i].y));
+    }
+    for (int x = bbox_min.x; x < bbox_max.x; ++x) {
+        for (int y = bbox_min.y; y < bbox_max.y; ++y) {
+            vector2i p = v2i(x, y);
+            vector3f bc = barycentric(vs, p);
+            if (bc.x >= 0 && bc.y >= 0 && bc.z >= 0) {
+                ruan_pixel(d, p, clr(255 * bc.x, 255 * bc.y, 255 * bc.z, 255));
+            }
+        }
+    }
+//    ruan_line(d, vs[0], vs[1], c);
+//    ruan_line(d, vs[1], vs[2], c);
+//    ruan_line(d, vs[2], vs[0], c);
+//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_min.x, bbox_max.y), clr_blue);
+//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_max.x, bbox_min.y), clr_blue);
+//    ruan_line(d, v2i(bbox_max.x, bbox_min.y), v2i(bbox_max.x, bbox_max.y), clr_blue);
+//    ruan_line(d, v2i(bbox_min.x, bbox_max.y), v2i(bbox_max.x, bbox_max.y), clr_blue);
 }
