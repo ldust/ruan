@@ -6,6 +6,30 @@
 #include <math.h>
 #include <float.h>
 
+vector3f v3f_add(vector3f a, vector3f b) {
+    return v3f(a.x + b.x, a.y + b.y, a.z + b.z);
+}
+
+vector3f v3f_sub(vector3f a, vector3f b) {
+    return v3f(a.x - b.x, a.y - b.y, a.z - b.z);
+}
+
+vector3f v3f_scale(vector3f v, float scale) {
+    return v3f(v.x * scale, v.y * scale, v.z * scale);
+}
+
+float v3f_length_sq(vector3f v) {
+    return v.x * v.x + v.y * v.y + v.z * v.z;
+}
+
+float v3f_length(vector3f v) {
+    return sqrtf(v3f_length_sq(v));
+}
+
+vector3f v3f_normalize(vector3f v) {
+    return v3f_scale(v, 1 / v3f_length(v));
+}
+
 float v3f_dot(vector3f a, vector3f b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }

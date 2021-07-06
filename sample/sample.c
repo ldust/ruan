@@ -12,7 +12,7 @@ mesh *m = NULL;
 void app_launch_finished() {
     srand(time(0));
     d = malloc(sizeof(device));
-    app_create_win(v2i(400, 400), d);
+    app_create_win(v2i(800, 800), d);
 }
 
 double get_unix_time(void) {
@@ -37,6 +37,8 @@ void app_update(void) {
     ruan_flush(d);
 }
 
+vector3f light_dir = v3f(0, 0, -1);
+
 void draw_wireframe() {
     if (m == NULL) {
         m = obj_read("res/african_head.obj");
@@ -47,15 +49,20 @@ void draw_wireframe() {
     int scale = w < h ? w : h;
 
     for (int i = 0; i < darray_size(m->triangles); i += 3) {
-        vector3f pos1 = m->vertices[m->triangles[i]];
-        vector3f pos2 = m->vertices[m->triangles[i + 1]];
-        vector3f pos3 = m->vertices[m->triangles[i + 2]];
-        vector2i vs[3];
-        vs[0] = v2i(pos1.x * scale + w, pos1.y * scale + h);
-        vs[1] = v2i(pos2.x * scale + w, pos2.y * scale + h);
-        vs[2] = v2i(pos3.x * scale + w, pos3.y * scale + h);
+        vector3f pa = m->vertices[m->triangles[i]];
+        vector3f pb = m->vertices[m->triangles[i + 1]];
+        vector3f pc = m->vertices[m->triangles[i + 2]];
 
-        ruan_triangle(d, vs,clr(rand() % 255, rand() % 255, rand() % 255, 255));
+        vector3f normal = v3f_normalize(v3f_cross(v3f_sub(pc, pa), v3f_sub(pb, pa)));
+
+        float intensity = v3f_dot(normal, v3f_normalize(light_dir));
+        if (intensity > 0) {
+            vector2i vs[3];
+            vs[0] = v2i(pa.x * scale + w, pa.y * scale + h);
+            vs[1] = v2i(pb.x * scale + w, pb.y * scale + h);
+            vs[2] = v2i(pc.x * scale + w, pc.y * scale + h);
+            ruan_triangle(d, vs,clr(intensity * 255, intensity * 255, intensity * 255, 255));
+        }
         //ruan_line(d, v2i(pos1.x * scale + w, pos1.y * scale + h), v2i(pos2.x * scale + w, pos2.y * scale + h), clr_white);
         //ruan_line(d, v2i(pos2.x * scale + w, pos2.y * scale + h), v2i(pos3.x * scale + w, pos3.y * scale + h), clr_white);
         //ruan_line(d, v2i(pos3.x * scale + w, pos3.y * scale + h), v2i(pos1.x * scale + w, pos1.y * scale + h), clr_white);
