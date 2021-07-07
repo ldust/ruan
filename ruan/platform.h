@@ -10,7 +10,7 @@
 typedef struct {
     vector2i win_size;
     void* handle;
-    void (*set_pixel) (void*, vector2i, color);
+    void (*set_pixel) (void*, vector2i, color32);
     void (*flush)(void*);
     void (*clear)(void*);
     float* depth_buffer;

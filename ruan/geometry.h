@@ -29,6 +29,13 @@ float v3f_length_sq(vector3f v);
 float v3f_dot(vector3f a, vector3f b);
 vector3f v3f_cross(vector3f a, vector3f b);
 
+typedef struct {
+    float x;
+    float y;
+} vector2f;
+
+#define v2f(x, y) ((vector2f) { x, y })
+
 vector3f barycentric(vector3f* vs, vector3f p);
 
 

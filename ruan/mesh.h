@@ -9,6 +9,8 @@
 
 typedef struct {
     vector3f *vertices;
+    vector3f *normals;
+    vector2f *uv;
     int *triangles;
 } mesh;
 

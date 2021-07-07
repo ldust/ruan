@@ -66,7 +66,7 @@
     return self;
 }
 
-- (void) setPixel:(vector2i) pos color:(color) clr {
+- (void) setPixel:(vector2i) pos color:(color32) clr {
     if (pos.x >= 0 && pos.x < size.x && pos.y >= 0 && pos.y < size.y) {
         int y = size.y - pos.y - 1;
         memcpy(rep.bitmapData + (size.x * y + pos.x) * BYTES_PER_PIXEL, &clr, BYTES_PER_PIXEL);
@@ -104,7 +104,7 @@ int main() {
     return 0;
 }
 
-void set_pixel(void *ptr, vector2i pos, color c) {
+void set_pixel(void *ptr, vector2i pos, color32 c) {
     device* d = (device*)ptr;
     [(ContentView*)d->handle setPixel:pos color:c];
 }

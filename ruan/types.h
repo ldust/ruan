@@ -12,14 +12,14 @@ typedef struct {
     byte g;
     byte b;
     byte a;
-} color;
+} color32;
 
-#define clr_red ((color){ 255, 0, 0, 255 })
-#define clr_green ((color){ 0, 255, 0, 255 })
-#define clr_blue ((color){ 0, 0, 255, 255 })
-#define clr_white ((color){ 255, 255, 255, 255 })
-#define clr_black ((color){ 0, 0, 0, 255 })
-#define clr(r, g, b, a) ((color){ r, g, b, a })
+#define clr32_red ((color32){ 255, 0, 0, 255 })
+#define clr32_green ((color32){ 0, 255, 0, 255 })
+#define clr32_blue ((color32){ 0, 0, 255, 255 })
+#define clr32_white ((color32){ 255, 255, 255, 255 })
+#define clr32_black ((color32){ 0, 0, 0, 255 })
+#define clr32(r, g, b, a) ((color32){ r, g, b, a })
 
 #define swap(x,y) do {   \
    typeof(x) _x = x;     \
