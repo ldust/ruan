@@ -6,6 +6,14 @@
 #include <math.h>
 #include <float.h>
 
+float v3f_field(vector3f v, int idx) {
+    return idx == 0 ? v.x : (idx == 1 ? v.y : v.z);
+}
+
+float v2f_field(vector2f v, int idx) {
+    return idx == 0 ? v.x : v.y;
+}
+
 vector3f v3f_add(vector3f a, vector3f b) {
     return v3f(a.x + b.x, a.y + b.y, a.z + b.z);
 }

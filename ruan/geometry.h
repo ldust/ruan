@@ -19,7 +19,7 @@ typedef struct {
 } vector3f;
 
 #define v3f(x, y, z) ((vector3f) { x, y, z })
-
+float v3f_field(vector3f v, int idx);
 vector3f v3f_add(vector3f a, vector3f b);
 vector3f v3f_sub(vector3f a, vector3f b);
 vector3f v3f_scale(vector3f v, float scale);
@@ -35,6 +35,7 @@ typedef struct {
 } vector2f;
 
 #define v2f(x, y) ((vector2f) { x, y })
+float v2f_field(vector2f v, int idx);
 
 vector3f barycentric(vector3f* vs, vector3f p);
 

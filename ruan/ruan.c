@@ -48,7 +48,24 @@ void ruan_line(device *d, vector2i from, vector2i to, color32 color) {
     }
 }
 
-void ruan_triangle(device *d, vector3f* positions, vector2f* uvs, tga_image* tex, color32 c) {
+float interpolate_v3f(vector3f* data, vector3f bc, int field) {
+    float v = 0;
+    for (int i = 0; i < 3; ++i) {
+        v += v3f_field(data[i], field) * v3f_field(bc, i);
+    }
+    return v;
+}
+
+float interpolate_v2f(vector2f* data, vector3f bc, int field) {
+    float v = 0;
+    for (int i = 0; i < 3; ++i) {
+        v += v2f_field(data[i], field) * v3f_field(bc, i);
+    }
+    return v;
+}
+
+
+void ruan_triangle(device *d, vector3f* positions, vector2f* uvs, vector3f* normals, vector3f light_dir, tga_image* tex) {
     int max_x = d->win_size.x - 1;
     int max_y = d->win_size.y - 1;
     vector2i bbox_min = v2i(max_x, max_y);
@@ -67,33 +84,33 @@ void ruan_triangle(device *d, vector3f* positions, vector2f* uvs, tga_image* tex
             if (bc.x >= 0 && bc.y >= 0 && bc.z >= 0) {
                 int depth_idx = y * d->win_size.x + x;
                 float old = d->depth_buffer[depth_idx];
-                float now = positions[0].z * bc.x;
-                now += positions[1].z * bc.y;
-                now += positions[2].z * bc.z;
+                float now = interpolate_v3f(positions, bc, 2);
                 if (now >= old) {
                     d->depth_buffer[depth_idx] = now;
-
-                    vector2f uv;
-                    uv.x = uvs[0].x * bc.x;
-                    uv.x += uvs[1].x * bc.y;
-                    uv.x += uvs[2].x * bc.z;
-
-                    uv.y = uvs[0].y * bc.x;
-                    uv.y += uvs[1].y * bc.y;
-                    uv.y += uvs[2].y * bc.z;
-
-                    color32 tex_c = tga_tex2d(tex, uv);
-                    color32 mix = clr32(c.r * tex_c.r / 255, c.g * tex_c.g / 255, c.b * tex_c.b / 255, c.a);
-                    ruan_pixel(d, v2i(x, y), mix);
+                    vector2f uv = v2f(interpolate_v2f(uvs, bc, 0), interpolate_v2f(uvs, bc, 1));
+                    vector3f normal = v3f(-interpolate_v3f(normals, bc, 0),
+                                          -interpolate_v3f(normals, bc, 1),
+                                          -interpolate_v3f(normals, bc, 2));
+                    float intensity = v3f_dot(normal, v3f_normalize(light_dir));
+                    if (intensity > 0) {
+                        color32 tex_c = tga_tex2d(tex, uv);
+                        color32 mix = clr32(intensity * tex_c.r,
+                                            intensity * tex_c.g,
+                                            intensity * tex_c.b,
+                                            255);
+                        ruan_pixel(d, v2i(x, y), mix);
+                    }
                 }
             }
         }
     }
-//    ruan_line(d, positions[0], positions[1], c);
-//    ruan_line(d, positions[1], positions[2], c);
-//    ruan_line(d, positions[2], positions[0], c);
-//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_min.x, bbox_max.y), clr_blue);
-//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_max.x, bbox_min.y), clr_blue);
-//    ruan_line(d, v2i(bbox_max.x, bbox_min.y), v2i(bbox_max.x, bbox_max.y), clr_blue);
-//    ruan_line(d, v2i(bbox_min.x, bbox_max.y), v2i(bbox_max.x, bbox_max.y), clr_blue);
+
+//    ruan_line(d, v2i(positions[0].x, positions[0].y), v2i(positions[1].x, positions[1].y), clr32_white);
+//    ruan_line(d, v2i(positions[1].x, positions[1].y), v2i(positions[2].x, positions[2].y), clr32_white);
+//    ruan_line(d, v2i(positions[2].x, positions[2].y), v2i(positions[0].x, positions[0].y), clr32_white);
+//
+//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_min.x, bbox_max.y), clr32_blue);
+//    ruan_line(d, v2i(bbox_min.x, bbox_min.y), v2i(bbox_max.x, bbox_min.y), clr32_blue);
+//    ruan_line(d, v2i(bbox_max.x, bbox_min.y), v2i(bbox_max.x, bbox_max.y), clr32_blue);
+//    ruan_line(d, v2i(bbox_min.x, bbox_max.y), v2i(bbox_max.x, bbox_max.y), clr32_blue);
 }

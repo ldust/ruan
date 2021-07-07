@@ -60,21 +60,19 @@ void draw_wireframe() {
     for (int i = 0; i < darray_size(m->triangles); i += 3) {
         vector3f pos[3];
         vector2f uv[3];
+        vector3f normals[3];
 
         for (int j = 0; j < 3; ++j) {
             int v_idx = m->triangles[i + j];
             pos[j] = m->vertices[v_idx];
             uv[j] = m->uv[v_idx];
+            normals[j] = m->normals[v_idx];
         }
 
-        vector3f normal = v3f_normalize(v3f_cross(v3f_sub(pos[2], pos[0]), v3f_sub(pos[1], pos[0])));
-        float intensity = v3f_dot(normal, v3f_normalize(light_dir));
-        if (intensity > 0) {
-            for (int j = 0; j < 3; ++j) {
-                pos[j] = world_to_screen(pos[j]);
-            }
-            ruan_triangle(d, pos, uv, tex, clr32(intensity * 255, intensity * 255, intensity * 255, 255));
+        for (int j = 0; j < 3; ++j) {
+            pos[j] = world_to_screen(pos[j]);
         }
+        ruan_triangle(d, pos, uv, normals, light_dir, tex);
         //ruan_line(d, v2i(pos1.x * scale + w, pos1.y * scale + h), v2i(pos2.x * scale + w, pos2.y * scale + h), clr_white);
         //ruan_line(d, v2i(pos2.x * scale + w, pos2.y * scale + h), v2i(pos3.x * scale + w, pos3.y * scale + h), clr_white);
         //ruan_line(d, v2i(pos3.x * scale + w, pos3.y * scale + h), v2i(pos1.x * scale + w, pos1.y * scale + h), clr_white);

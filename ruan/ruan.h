@@ -15,5 +15,5 @@ void ruan_clear(device* d);
 void ruan_flush(device* d);
 void ruan_pixel(device* d, vector2i pos, color32 color);
 void ruan_line(device *d, vector2i from, vector2i to, color32 color);
-void ruan_triangle(device *d, vector3f* positions, vector2f* uv, tga_image* tex, color32 color);
+void ruan_triangle(device *d, vector3f* positions, vector2f* uv, vector3f* normals, vector3f light_dir, tga_image* tex);
 #endif //RUAN_RUAN_H
