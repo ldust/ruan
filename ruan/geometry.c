@@ -46,5 +46,5 @@ vector3f barycentric(vector3f* vs, vector3f p) {
     if (fabsf(st.z) < FLT_EPSILON) {
         return v3f(-1, 1, 1);
     }
-    return v3f(1.0 - (st.x + st.y) / st.z, st.y / st.z, st.x / st.z);
+    return v3f(1.0 - (st.x + st.y) / st.z, st.x / st.z, st.y / st.z);
 }
