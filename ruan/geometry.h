@@ -37,6 +37,22 @@ typedef struct {
 #define v2f(x, y) ((vector2f) { x, y })
 float v2f_field(vector2f v, int idx);
 
+typedef struct {
+    float data[16];
+} matrix44;
+
+matrix44 mat44_identity();
+
+typedef struct {
+    float data[9];
+} matrix33;
+
+vector3f v3f_mul_mat33(vector3f v, matrix33 mat);
+
+vector3f v3f_mul_mat44(vector3f v, matrix44 mat);
+
+matrix44 mat44_mul_mat44(matrix44 a, matrix44 b);
+
 vector3f barycentric(vector3f* vs, vector3f p);
 
 

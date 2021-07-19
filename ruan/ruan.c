@@ -88,9 +88,9 @@ void ruan_triangle(device *d, vector3f* positions, vector2f* uvs, vector3f* norm
                 if (now >= old) {
                     d->depth_buffer[depth_idx] = now;
                     vector2f uv = v2f(interpolate_v2f(uvs, bc, 0), interpolate_v2f(uvs, bc, 1));
-                    vector3f normal = v3f(-interpolate_v3f(normals, bc, 0),
-                                          -interpolate_v3f(normals, bc, 1),
-                                          -interpolate_v3f(normals, bc, 2));
+                    vector3f normal = v3f(interpolate_v3f(normals, bc, 0),
+                                          interpolate_v3f(normals, bc, 1),
+                                          interpolate_v3f(normals, bc, 2));
                     float intensity = v3f_dot(normal, v3f_normalize(light_dir));
                     if (intensity > 0) {
                         color32 tex_c = tga_tex2d(tex, uv);
